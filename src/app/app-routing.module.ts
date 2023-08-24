@@ -4,17 +4,22 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { GoogleComponent } from './google/google.component';
 import { GitlabComponent } from './gitlab/gitlab.component';
+import { AuthService } from './auth/auth.service';
+import { isAuthenticatedGuard } from './authorization.guard';
 
 const routes: Routes = [
   {path: '', component: LoginComponent, pathMatch: "full"},
-  {path: 'google', component: GoogleComponent},
-  {path: 'gitlab', component: GitlabComponent},
-  {path: '**', component: AppComponent},
-
+  {path: 'google', component: GoogleComponent, canActivate: [isAuthenticatedGuard]},
+  {path: 'gitlab', component: GitlabComponent, canActivate: [isAuthenticatedGuard]},
+  {path: '**', component: AppComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { 
+
+   constructor(private authService: AuthService){}
+
+}

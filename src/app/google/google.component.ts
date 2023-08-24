@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-google',
@@ -10,7 +12,7 @@ import { Component } from '@angular/core';
   // ]
 })
 export class GoogleComponent {
-  dataSet: {key: string, name: string, age: number, address: string}[] = [
+  dataSet: { key: string, name: string, age: number, address: string }[] = [
     {
       key: '1',
       name: 'John Brown',
@@ -30,4 +32,13 @@ export class GoogleComponent {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
+
+  constructor(private authService: AuthService){}
+
+  logout() {
+    this.authService.logout();
+  }
+
+
+
 }

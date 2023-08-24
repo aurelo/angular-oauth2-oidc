@@ -3,9 +3,7 @@
         <nz-page-header-title>Gitlab</nz-page-header-title>
         <!-- <nz-page-header-subtitle>logged in via Google OIDC</nz-page-header-subtitle> -->
         <nz-page-header-extra>
-            <!-- <button nz-button>Operation</button>
-            <button nz-button>Operation</button> -->
-            <button nz-button nzType="primary" routerLink="/" nzSize="large">Logout</button>
+           <!-- <button nz-button nzType="primary" (click)="logout()" nzSize="large">Logout</button>-->
         </nz-page-header-extra>
         <nz-page-header-content>
         </nz-page-header-content>
@@ -15,25 +13,24 @@
     <nz-row nzGutter="40">
         <nz-col nzSpan="12" style="text-align: left">
             <div style="background: #ECECEC;padding:30px;">
-                <nz-card [nzBordered]="false" nzTitle="Token info">
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                </nz-card>
+                <app-user config="gitlab"></app-user>
             </div>
         </nz-col>
         <nz-col nzSpan="12">
             <div style="background: #ECECEC;padding:30px;">
 
                 <nz-card style="text-align: left;" nzTitle="Gitlab User API" [nzExtra]="extraTemplate">
-                    <p>User info</p>
+                    <pre>{{gitlabUserData$ | async | json}}</pre>
                 </nz-card>
                 <ng-template #extraTemplate>
                     <nz-button-group>
-                        <button nz-button nzType="primary">Fetch</button>
+                        <button nz-button nzType="primary" (click)="getUserData()">Get user data</button>
                     </nz-button-group>
                 </ng-template>
             </div>
+
+
+
         </nz-col>
     </nz-row>
 </div>

@@ -8,7 +8,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -20,6 +20,13 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -28,6 +35,9 @@ import { GoogleOutline, GitlabOutline } from '@ant-design/icons-angular/icons';
 import { LoginComponent } from './login/login.component';
 import { GoogleComponent } from './google/google.component';
 import { GitlabComponent } from './gitlab/gitlab.component';
+import { AuthConfigModule } from './auth/auth-config.module';
+import { UserComponent } from './user/user.component';
+import { AuthInterceptor } from 'angular-auth-oidc-client';
 
 const icons: IconDefinition[] = [ GoogleOutline, GitlabOutline ];
 
@@ -38,7 +48,8 @@ registerLocaleData(en);
     AppComponent,
     LoginComponent,
     GoogleComponent,
-    GitlabComponent
+    GitlabComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -55,10 +66,19 @@ registerLocaleData(en);
     NzIconModule,
     NzPageHeaderModule,
     NzResultModule,
-    NzTableModule
+    NzTableModule,
+    NzListModule,
+    NzTagModule,
+    NzAlertModule,
+    NzImageModule,
+    NzSpaceModule,
+    NzMessageModule,
+    NzNotificationModule,
+    AuthConfigModule
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

@@ -25,3 +25,48 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+---
+
+## LINKS
+[Online PKCE Generator Tool](https://tonyxu-io.github.io/pkce-generator/)
+
+
+---
+
+### STEPS
+
+* create new angular app
+  ```
+  ng new angular-oauth2-oidc
+  cd angular-oauth2-oidc
+  ```
+
+* add ng-zorro ui library
+  ```
+  ng add ng-zorro-antd
+  ```
+
+* configure test skiping and optionally inline styling
+  ```
+    "schematics": {
+        "@schematics/angular:component": {
+        "style": "less",
+        "inlineStyle": true,
+        "skipTests": true
+        }
+  ```   
+
+* remove typescript strict property initialization in *tsconfig.json*
+  ```
+  "strictPropertyInitialization": false
+  ```
+
+* push project to github and create workflow to publish to github pages
+  (check that you have valid app and github pages url which we'll use with google and github client registration)
+
+* add [angular-auth-oidc-client](https://github.com/damienbod/angular-auth-oidc-client) library
+  ```
+  ng add angular-auth-oidc-client
+  ```
+  authority url for google: *https://accounts.google.com*

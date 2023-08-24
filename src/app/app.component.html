@@ -6,22 +6,39 @@
           Angular - SPA Oauth2 / Oidc Showcase
         </h2>
       </nz-col>
-      <nz-col nzSpan="12" class="login_info">
-        not logged in
-        <nz-divider nzType="vertical"></nz-divider>
-        <nz-avatar nzIcon="user" [ngStyle]="{ 'background-color': '#00a2ae' }"></nz-avatar>
+      <nz-col nzSpan="12" class="login_info" *ngIf="isAuthenticated$ | async; let auth">
+         <!-- {{auth | json}}  -->
+<!--
+        <nz-tag 
+          *ngFor="let config of auth.allConfigsAuthenticated" 
+          nzMode="checkable"
+          [nzChecked]="config.isAuthenticated">{{config.configId}}</nz-tag>
+-->
 
-        <!-- <nz-button-group>
-          <button nz-button nzType="primary">Login</button>
-          <button nz-button nzType="primary" disabled>Logout</button>
-          <button nz-button nzType="primary">Refresh</button>
-        </nz-button-group> -->
+        <span *ngIf="isAuthenticated(auth)">
+          <nz-tag *ngFor="let config of auth.allConfigsAuthenticated" nzColor="{{config.isAuthenticated ? '#55acee' : 'default'}}">
+            <span nz-icon nzType="{{config.configId}}"></span>
+            <span>{{config.configId}}</span>
+          </nz-tag>
+        </span>
+        
+
+        <button *ngIf="isAuthenticated(auth)" nz-button nzType="primary" (click)="logout()" nzShape="round">Logout<span nz-icon nzType="logout" nzTheme="outline"></span></button>
+        <span *ngIf="!isAuthenticated(auth)">Not Logged In</span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <nz-avatar *ngIf="!isAuthenticated(auth)" nzIcon="user"
+          [ngStyle]="{ 'background-color': '#00a2ae' }"></nz-avatar>
+        
+          <nz-avatar *ngIf="isAuthenticated(auth)" nzIcon="user" nzSrc="{{(userData$ | async)?.userData?.picture}}"></nz-avatar>
+
       </nz-col>
     </nz-row>
   </nz-header>
   <nz-content>
+    <div class="content">
     <div class="inner-content">
       <router-outlet></router-outlet>
     </div>
+  </div>
   </nz-content>
 </nz-layout>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,5 +8,14 @@ import { Component } from '@angular/core';
   ]
 })
 export class LoginComponent {
+  
+  constructor(private authService: AuthService) { }
 
+  loginWithGoogle(){
+    this.authService.loginWithGoogle();
+  }
+
+  loginWithGitlab(){
+    this.authService.loginWithGitlab();
+  }
 }
