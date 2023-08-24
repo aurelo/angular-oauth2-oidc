@@ -20,7 +20,7 @@
             <div style="background: #ECECEC;padding:30px;">
 
                 <nz-card style="text-align: left;" nzTitle="Gitlab User API" [nzExtra]="extraTemplate">
-                    <pre>{{gitlabUserData$ | async | json}}</pre>
+                    <pre *ngIf="gitlabUserData != ''">{{gitlabUserData | json}}</pre>
                 </nz-card>
                 <ng-template #extraTemplate>
                     <nz-button-group>

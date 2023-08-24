@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticatedResult, LoginResponse, OidcSecurityService, OpenIdConfiguration, UserDataResult } from 'angular-auth-oidc-client';
 import { AuthService } from './auth/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -48,6 +48,18 @@ export class AppComponent implements OnInit {
 
   isAuthenticated(a: AuthenticatedResult): boolean {
     return this.authService.isAnyAuthenticated(a.allConfigsAuthenticated);
+  }
+
+  userPicture(a: AuthenticatedResult): Observable<string> {
+    return this.authService.authenticatedUserData(a).pipe(
+      map((ud:any)  => ud?.picture)
+    );
+  }
+
+  userName(a: AuthenticatedResult): Observable<string> {
+    return this.authService.authenticatedUserData(a).pipe(
+      map((ud:any)  => ud?.name)
+    );
   }
 
   logout() {

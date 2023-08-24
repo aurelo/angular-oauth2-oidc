@@ -11,8 +11,7 @@ import { Observable, filter } from 'rxjs';
 })
 export class GitlabComponent {
 
-  gitlabUserData$: Observable<any>;
-  showUserData: boolean = false;
+  gitlabUserData: string = '';
 
   constructor(private authService: AuthService,
     private gitlabService: GitlabService){}
@@ -22,6 +21,8 @@ export class GitlabComponent {
   }
 
   getUserData() {
-    this.gitlabUserData$ = this.gitlabService.readUser();
+    this.gitlabService.readUser().subscribe(
+      data => this.gitlabUserData = data
+    );
   }
 }

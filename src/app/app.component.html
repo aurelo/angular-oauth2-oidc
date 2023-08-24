@@ -23,13 +23,15 @@
         </span>
         
 
-        <button *ngIf="isAuthenticated(auth)" nz-button nzType="primary" (click)="logout()" nzShape="round">Logout<span nz-icon nzType="logout" nzTheme="outline"></span></button>
+        <button *ngIf="isAuthenticated(auth)" nz-button nzType="primary" (click)="logout()" nzShape="round">Logout &nbsp; <b>{{userName(auth) | async}}</b>
+          <!-- <span nz-icon nzType="logout" nzTheme="outline"></span> -->
+        </button>
         <span *ngIf="!isAuthenticated(auth)">Not Logged In</span>
         <nz-divider nzType="vertical"></nz-divider>
         <nz-avatar *ngIf="!isAuthenticated(auth)" nzIcon="user"
           [ngStyle]="{ 'background-color': '#00a2ae' }"></nz-avatar>
         
-          <nz-avatar *ngIf="isAuthenticated(auth)" nzIcon="user" nzSrc="{{(userData$ | async)?.userData?.picture}}"></nz-avatar>
+          <nz-avatar *ngIf="isAuthenticated(auth)" nzIcon="user" nzSrc="{{userPicture(auth) | async}}"></nz-avatar>
 
       </nz-col>
     </nz-row>

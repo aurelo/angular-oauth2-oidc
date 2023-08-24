@@ -44,6 +44,11 @@ export class AuthService implements OnInit {
     return !!allConfigsAuthenticated.find(c => c.isAuthenticated);
   }
 
+  authenticatedUserData(authenticatedResult: AuthenticatedResult): Observable<any> {
+    const configId = authenticatedResult.allConfigsAuthenticated.find(a => a.isAuthenticated)?.configId;
+    return this.oidcSecurityService.getUserData(configId);
+  }
+
 
   loginWithGoogle() {
     this.oidcSecurityService.authorize("google");

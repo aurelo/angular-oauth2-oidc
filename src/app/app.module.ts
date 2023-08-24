@@ -38,6 +38,7 @@ import { GitlabComponent } from './gitlab/gitlab.component';
 import { AuthConfigModule } from './auth/auth-config.module';
 import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from 'angular-auth-oidc-client';
+import { HomeComponent } from './home/home.component';
 
 const icons: IconDefinition[] = [ GoogleOutline, GitlabOutline ];
 
@@ -49,7 +50,8 @@ registerLocaleData(en);
     LoginComponent,
     GoogleComponent,
     GitlabComponent,
-    UserComponent
+    UserComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
