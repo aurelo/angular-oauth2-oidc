@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', component: LoginComponent, pathMatch: "full"},
   {path: 'google', component: GoogleComponent, canActivate: [isAuthenticatedGuard]},
   {path: 'gitlab', component: GitlabComponent, canActivate: [isAuthenticatedGuard]},
-  {path: '**', component: AppComponent}
+  {path: '**', component: LoginComponent}
 ];
 
 @NgModule({

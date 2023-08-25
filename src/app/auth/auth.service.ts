@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticatedResult, ConfigAuthenticatedResult, OidcSecurityService, OpenIdConfiguration, PublicEventsService, UserDataResult } from 'angular-auth-oidc-client';
-import { Observable, filter, map, take, tap } from 'rxjs';
+import { Observable, filter, flatMap, map, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,35 @@ export class AuthService implements OnInit {
   authenticatedUserData(authenticatedResult: AuthenticatedResult): Observable<any> {
     const configId = authenticatedResult.allConfigsAuthenticated.find(a => a.isAuthenticated)?.configId;
     return this.oidcSecurityService.getUserData(configId);
+  }
+
+
+  isUserAuthenticated(a: AuthenticatedResult): boolean {
+    return this.isAnyAuthenticated(a.allConfigsAuthenticated);
+  }
+
+  userIdForConfig(configId: string): Observable<string> {
+    return this.oidcSecurityService.userData$.pipe(
+      flatMap(val => val.allUserData),
+      filter(val => val.configId === configId),
+      map(val => val.userData?.sub)
+    );
+
+    // return this.authenticatedUserData(a).pipe(
+    //   map((ud: any) => ud?.sub)
+    // );
+  }
+
+  userPicture(a: AuthenticatedResult): Observable<string> {
+    return this.authenticatedUserData(a).pipe(
+      map((ud: any) => ud?.picture)
+    );
+  }
+
+  userName(a: AuthenticatedResult): Observable<string> {
+    return this.authenticatedUserData(a).pipe(
+      map((ud: any) => ud?.name)
+    );
   }
 
 

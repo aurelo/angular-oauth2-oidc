@@ -8,11 +8,12 @@ import { AuthService } from '../auth/auth.service';
   ]
 })
 export class LoginComponent {
-  
+
   constructor(private authService: AuthService) { }
 
   loginWithGoogle(){
     this.authService.loginWithGoogle();
+
   }
 
   loginWithGitlab(){

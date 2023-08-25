@@ -1,0 +1,37 @@
+<nz-header class="header">
+    <nz-row>
+      <nz-col nzSpan="12">
+        <h2 routerLink="/">
+          Angular - SPA Oauth2 / Oidc Showcase
+        </h2>
+      </nz-col>
+      <nz-col nzSpan="12" class="login_info" *ngIf="isAuthenticated$ | async; let auth">
+         <!-- {{auth | json}}  -->
+<!--
+        <nz-tag 
+          *ngFor="let config of auth.allConfigsAuthenticated" 
+          nzMode="checkable"
+          [nzChecked]="config.isAuthenticated">{{config.configId}}</nz-tag>
+-->
+
+        <span *ngIf="isUserAuthenticated(auth)">
+          <nz-tag *ngFor="let config of auth.allConfigsAuthenticated" nzColor="{{config.isAuthenticated ? '#55acee' : 'default'}}">
+            <span nz-icon nzType="{{config.configId}}"></span>
+            <span>{{config.configId}}</span>
+          </nz-tag>
+        </span>
+        
+
+        <button *ngIf="isUserAuthenticated(auth)" nz-button nzType="primary" (click)="logout()" nzShape="round">Logout &nbsp; <b>{{userName(auth) | async}}</b>
+          <!-- <span nz-icon nzType="logout" nzTheme="outline"></span> -->
+        </button>
+        <span *ngIf="!isUserAuthenticated(auth)">Not Logged In</span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <nz-avatar *ngIf="!isUserAuthenticated(auth)" nzIcon="user"
+          [ngStyle]="{ 'background-color': '#00a2ae' }"></nz-avatar>
+        
+          <nz-avatar *ngIf="isUserAuthenticated(auth)" nzIcon="user" nzSrc="{{userPicture(auth) | async}}"></nz-avatar>
+
+      </nz-col>
+    </nz-row>
+  </nz-header>

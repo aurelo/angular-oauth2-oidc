@@ -27,6 +27,9 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -38,7 +41,7 @@ import { GitlabComponent } from './gitlab/gitlab.component';
 import { AuthConfigModule } from './auth/auth-config.module';
 import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from 'angular-auth-oidc-client';
-import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
 
 const icons: IconDefinition[] = [ GoogleOutline, GitlabOutline ];
 
@@ -51,7 +54,7 @@ registerLocaleData(en);
     GoogleComponent,
     GitlabComponent,
     UserComponent,
-    HomeComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +79,9 @@ registerLocaleData(en);
     NzSpaceModule,
     NzMessageModule,
     NzNotificationModule,
+    NzSkeletonModule,
+    NzPopconfirmModule,
+    NzInputModule,
     AuthConfigModule
   ],
   providers: [
