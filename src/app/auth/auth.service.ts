@@ -92,4 +92,8 @@ export class AuthService implements OnInit {
     this.oidcSecurityService.logoffLocalMultiple();
     this.router.navigate([""]);
   }
+
+  forceRefreshSession(configId: string){
+    return this.oidcSecurityService.forceRefreshSession(undefined, configId);
+  }
 }
