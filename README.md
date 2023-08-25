@@ -31,6 +31,21 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## LINKS
 [Online PKCE Generator Tool](https://tonyxu-io.github.io/pkce-generator/)
 
+[Google discovery document docs](https://developers.google.com/identity/openid-connect/openid-connect#discovery)
+
+[Google openid config](https://accounts.google.com/.well-known/openid-configuration)
+
+[Gitlab discovery document](https://gitlab.com/.well-known/openid-configuration)
+
+[Authority](https://accounts.google.com)
+
+
+[Set up google credentials and consent](https://console.cloud.google.com/apis/dashboard)
+
+
+[Google drive API docs](https://developers.google.com/drive/api/reference/rest/v3?apix=true)
+
+[Gitlab list current user API](https://docs.gitlab.com/ee/api/users.html#for-non-administrator-users-1)
 
 ---
 
@@ -70,3 +85,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   ng add angular-auth-oidc-client
   ```
   authority url for google: *https://accounts.google.com*
+

@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { GoogleService } from './google.service';
 import { Observable, filter, map, switchMap } from 'rxjs';
@@ -18,7 +18,7 @@ export class GoogleComponent {
   constructor(private authService: AuthService, 
     private googleService: GoogleService,
     private notification: NzNotificationService,
-    private zone:NgZone) { }
+    private ref: ChangeDetectorRef) { }
 
   logout() {
     this.authService.logout();
@@ -37,27 +37,16 @@ export class GoogleComponent {
   }
 
   createGmailLabel(newLabel: string) {
-    const addingLabel: GmailLabel = 
-    {
-    id: "Label_16",
-    name: "dasdsa",
-    messageListVisibility: "show",
-    labelListVisibility: "labelShow",
-    type: "user"
-  };
 
-  this.gmailUserLabels.push(addingLabel);
-
-    // this.authService.userIdForConfig('google').pipe(
-    //   switchMap(userId => {
-    //     return this.googleService.createLabel(userId, newLabel)
-    //   }),
-    // ).subscribe(data => {
-    //   console.log("create Gmail label", data);
-    //   this.gmailUserLabels.push(data);
-    //   console.log("array after push", this.gmailUserLabels)
-    //   this.notification.success("Created Label", newLabel);
-    // });
+    this.authService.userIdForConfig('google').pipe(
+      switchMap(userId => {
+        return this.googleService.createLabel(userId, newLabel)
+      }),
+    ).subscribe(data => {
+      console.log("create Gmail label", data);
+      this.gmailUserLabels = [...this.gmailUserLabels, data];
+      this.notification.success("Created Label", newLabel);
+    });
 
     this.label = '';
   }
