@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticatedResult, ConfigAuthenticatedResult, OidcSecurityService, OpenIdConfiguration, PublicEventsService, UserDataResult } from 'angular-auth-oidc-client';
-import { Observable, filter, flatMap, map, take, tap } from 'rxjs';
+import { Observable, config, filter, map, mergeMap, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { Observable, filter, flatMap, map, take, tap } from 'rxjs';
 export class AuthService implements OnInit {
 
   configurations: OpenIdConfiguration[];
-  isAuthenticated$: Observable<AuthenticatedResult>;
+  //isAuthenticated$: Observable<AuthenticatedResult>;
   userData$: Observable<UserDataResult>;
 
   constructor(private oidcSecurityService: OidcSecurityService,
@@ -27,57 +27,29 @@ export class AuthService implements OnInit {
 
   ngOnInit(): void {
     this.configurations = this.oidcSecurityService.getConfigurations();
-    this.isAuthenticated$ = this.oidcSecurityService.isAuthenticated$;
-    this.userData$ = this.oidcSecurityService.userData$;
+    //this.isAuthenticated$ = this.oidcSecurityService.isAuthenticated$;
+    this.userData$ = this.oidcSecurityService.getUserData();
   }
 
-  isAuthenticated(isAuthenticated$: Observable<AuthenticatedResult>): Observable<boolean> {
-    return isAuthenticated$.pipe(
+  get isAuthenticated$(): Observable<AuthenticatedResult> {
+    return this.oidcSecurityService.isAuthenticated$;
+  };
+
+  isUserAuthenticated(): Observable<boolean> {
+    return this.oidcSecurityService.isAuthenticated$.pipe(
       take(1),
-      map((a: AuthenticatedResult) => {
-        return !!a.allConfigsAuthenticated.find(a => a.isAuthenticated);
-      })
+      map(ar => !!ar.allConfigsAuthenticated.find(ac => ac.isAuthenticated))
     );
   }
 
-  isAnyAuthenticated(allConfigsAuthenticated: ConfigAuthenticatedResult[]): boolean {
-    return !!allConfigsAuthenticated.find(c => c.isAuthenticated);
-  }
-
-  authenticatedUserData(authenticatedResult: AuthenticatedResult): Observable<any> {
-    const configId = authenticatedResult.allConfigsAuthenticated.find(a => a.isAuthenticated)?.configId;
-    return this.oidcSecurityService.getUserData(configId);
-  }
-
-
-  isUserAuthenticated(a: AuthenticatedResult): boolean {
-    return this.isAnyAuthenticated(a.allConfigsAuthenticated);
-  }
-
-  userIdForConfig(configId: string): Observable<string> {
+  authenticatedUserData(configId?: string): Observable<any> {
     return this.oidcSecurityService.userData$.pipe(
-      flatMap(val => val.allUserData),
-      filter(val => val.configId === configId),
-      map(val => val.userData?.sub)
-    );
-
-    // return this.authenticatedUserData(a).pipe(
-    //   map((ud: any) => ud?.sub)
-    // );
-  }
-
-  userPicture(a: AuthenticatedResult): Observable<string> {
-    return this.authenticatedUserData(a).pipe(
-      map((ud: any) => ud?.picture)
+      take(1),
+      mergeMap(udr => udr.allUserData),
+      filter(ud => (configId != null && ud.configId === configId) || ud.userData != null),
+      map(ud => ud.userData)
     );
   }
-
-  userName(a: AuthenticatedResult): Observable<string> {
-    return this.authenticatedUserData(a).pipe(
-      map((ud: any) => ud?.name)
-    );
-  }
-
 
   loginWithGoogle() {
     this.oidcSecurityService.authorize("google");
@@ -93,7 +65,8 @@ export class AuthService implements OnInit {
     this.router.navigate([""]);
   }
 
-  forceRefreshSession(configId: string){
+  forceRefreshSession(configId: string) {
     return this.oidcSecurityService.forceRefreshSession(undefined, configId);
   }
+
 }

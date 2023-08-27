@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticatedResult, OidcSecurityService } from 'angular-auth-oidc-client';
+import { AuthenticatedResult } from 'angular-auth-oidc-client';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
@@ -12,25 +12,20 @@ export class HeaderComponent implements OnInit{
   isAuthenticated$: Observable<AuthenticatedResult>;
   
   constructor(
-    private oidcSecurityService: OidcSecurityService,
     private authService: AuthService
   ) {
   }
   
   ngOnInit(): void {
-    this.isAuthenticated$ = this.oidcSecurityService.isAuthenticated$;
+    this.isAuthenticated$ = this.authService.isAuthenticated$;
   }
 
-  isUserAuthenticated(a: AuthenticatedResult): boolean {
-    return this.authService.isUserAuthenticated(a);
+  isUserAuthenticated(): Observable<boolean> {
+    return this.authService.isUserAuthenticated();
   }
 
-  userPicture(a: AuthenticatedResult): Observable<any> {
-    return this.authService.userPicture(a);
-  }
-
-  userName(a: AuthenticatedResult): Observable<string> {
-    return this.authService.userName(a);
+  user(): Observable<any> {
+    return this.authService.authenticatedUserData();
   }
 
   logout() {

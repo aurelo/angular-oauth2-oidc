@@ -17,15 +17,15 @@ export class GoogleComponent {
 
   constructor(private authService: AuthService, 
     private googleService: GoogleService,
-    private notification: NzNotificationService,
-    private ref: ChangeDetectorRef) { }
+    private notification: NzNotificationService) { }
 
   logout() {
     this.authService.logout();
   }
 
   fetchGmailLabels() {
-    this.authService.userIdForConfig('google').pipe(
+    this.authService.authenticatedUserData('google').pipe(
+      map(ud => ud?.sub),
       switchMap(userId => {
         return this.googleService.listLabels(userId).pipe(
           map((val: any) => val.labels)
@@ -38,7 +38,8 @@ export class GoogleComponent {
 
   createGmailLabel(newLabel: string) {
 
-    this.authService.userIdForConfig('google').pipe(
+    this.authService.authenticatedUserData('google').pipe(
+      map(ud => ud?.sub),
       switchMap(userId => {
         return this.googleService.createLabel(userId, newLabel)
       }),
@@ -52,11 +53,13 @@ export class GoogleComponent {
   }
 
   deleteGmailLabel(label: GmailLabel) {
-    this.authService.userIdForConfig('google').pipe(
+    this.authService.authenticatedUserData('google').pipe(
+      map(ud => ud?.sub),
       switchMap(userId => {
         return this.googleService.deleteLabel(userId, label.id)
       }),
     ).subscribe(data => {
+      console.log("Gmail deleted label", data);
       this.gmailUserLabels = this.gmailUserLabels.filter(l => l != label);
       this.notification.success("Deleted Label", label.name);
     });
